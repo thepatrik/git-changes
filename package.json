@@ -1,6 +1,6 @@
 {
   "name": "git-changes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tool for getting a changelog between two git tags",
   "main": "index.js",
   "preferGlobal": true,
@@ -15,7 +15,10 @@
   "bin": {
     "git-changes": "./bin/git-changes"
   },
-  "keywords": ["changelog", "git"],
+  "keywords": [
+    "changelog",
+    "git"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/thepatrik/git-changes/issues"
