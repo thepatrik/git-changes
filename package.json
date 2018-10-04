@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Tool for getting a changelog between two git tags",
   "main": "index.js",
+  "preferGlobal": true,
   "scripts": {
     "eslint": "./node_modules/.bin/eslint index.js",
     "start": "node index.js"
@@ -10,6 +11,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thepatrik/git-changes.git"
+  },
+  "bin": {
+    "git-changes": "./bin/git-changes"
   },
   "keywords": ["changelog", "git"],
   "license": "MIT",

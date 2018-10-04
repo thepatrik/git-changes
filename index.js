@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 const path = require('path');
 const util = require('util');
@@ -16,9 +15,9 @@ async function main(dir, since, to) {
 }
 
 function parseDir(dir) {
+    if (!dir) dir = process.cwd();
     if (!dir.endsWith('.git')) dir += '/.git';
     dir = path.resolve(dir);
-    if (!dir) dir = process.cwd() + '/.git';
 
     return dir;
 }
