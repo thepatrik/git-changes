@@ -1,16 +1,17 @@
 {
   "name": "git-changes",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tool for getting a changelog between two git tags",
   "main": "index.js",
   "scripts": {
+    "eslint": "./node_modules/.bin/eslint index.js",
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thepatrik/git-changes.git"
   },
-  "keywords": [],
+  "keywords": ["changelog", "git"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/thepatrik/git-changes/issues"
@@ -18,5 +19,8 @@
   "homepage": "https://github.com/thepatrik/git-changes#readme",
   "dependencies": {
     "yargs": "^12.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1"
   }
 }

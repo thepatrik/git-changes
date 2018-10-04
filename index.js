@@ -4,9 +4,10 @@ const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-async function main(dir) {
+async function main(dir, since, to) {
+    dir = parseDir(dir);
     try {
-        const changes = await getChanges(dir);
+        const changes = await getChanges(dir, since, to);
         console.log(changes);
     } catch (err) {
         console.log(err);
@@ -14,11 +15,20 @@ async function main(dir) {
     }
 }
 
-async function getChanges(dir) {
+function parseDir(dir) {
+    if (!dir.endsWith('.git')) dir += '/.git';
+    dir = path.resolve(dir);
+    if (!dir) dir = process.cwd() + '/.git';
+
+    return dir;
+}
+
+async function getChanges(dir, since, to) {
     const opts = {replaceNewLine: true};
-    const start = await execute(`git --git-dir ${dir} describe --abbrev=0 --tags`, opts);
-    const next = await execute(`git --git-dir ${dir} describe --abbrev=0 $(git --git-dir ${dir} describe --abbrev=0)^`, opts);
-    return await execute(`git --git-dir ${dir} log --no-merges --pretty=format:' * %s' ${next}..${start}`);
+    if (!to) to = await execute(`git --git-dir ${dir} describe --abbrev=0 --tags`, opts);
+    if (!since) since = await execute(`git --git-dir ${dir} describe --abbrev=0 $(git --git-dir ${dir} describe --abbrev=0)^`, opts);
+
+    return await execute(`git --git-dir ${dir} log --no-merges --pretty=format:' * %s' ${since}..${to}`);
 }
 
 async function execute(cmd, opts) {
@@ -32,15 +42,9 @@ async function execute(cmd, opts) {
     return stdout;
 }
 
-const argv = require('yargs').argv
-let dir = argv.dir;
-if (dir) {
-    if (!dir.endsWith('.git')) dir += '/.git'
-    dir = path.resolve(dir);
-} else {
-    dir = process.cwd() + '/.git'
-}
+const argv = require('yargs').argv;
+const dir = argv.dir;
+const since = argv.since;
+const to = argv.to;
 
-console.log(dir);
-
-main(dir);
+main(dir, since, to);
