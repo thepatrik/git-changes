@@ -25,9 +25,13 @@ function parseDir(dir) {
 async function getChanges(dir, since, to) {
     const opts = {replaceNewLine: true};
     if (!to) to = await execute(`git --git-dir ${dir} describe --abbrev=0 --tags`, opts);
-    if (!since) since = await execute(`git --git-dir ${dir} describe --abbrev=0 $(git --git-dir ${dir} describe --abbrev=0)^`, opts);
+    if (!since) {
+        try {
+            since = await execute(`git --git-dir ${dir} describe --abbrev=0 $(git --git-dir ${dir} describe --abbrev=0)^`, opts);
+        } catch (err) {}
+    }
 
-    return await execute(`git --git-dir ${dir} log --no-merges --pretty=format:' * %s' ${since}..${to}`);
+    return await execute(`git --git-dir ${dir} log --no-merges --pretty=format:' * %s' ` + (since ? `${since}..${to}`: `${to}`));
 }
 
 async function execute(cmd, opts) {
