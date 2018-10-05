@@ -2,14 +2,16 @@
 const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const argv = require('yargs').argv;
 
-async function main(dir, since, to) {
+async function main(dir, since, to, silent) {
     dir = parseDir(dir);
     try {
         const changes = await getChanges(dir, since, to);
-        console.log(changes);
+        if (!silent) console.log(changes);
+        return changes;
     } catch (err) {
-        console.log(err);
+        if (!silent) console.log(err);
         process.exit(1);
     }
 }
@@ -45,9 +47,11 @@ async function execute(cmd, opts) {
     return stdout;
 }
 
-const argv = require('yargs').argv;
-const dir = argv.dir;
-const since = argv.since;
-const to = argv.to;
+module.exports = opts => {
+    if (!opts) opts = {};
+    const dir = opts.dir ? opts.dir : argv.dir;
+    const since = opts.since ? opts.since : argv.since;
+    const to = opts.to ? opts.to : argv.to;
 
-main(dir, since, to);
+    return main(dir, since, to, opts.silent);
+};
