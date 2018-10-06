@@ -4,3 +4,4 @@ node_js: "node"
 
 script:
     - npm run eslint
+    - npm test
