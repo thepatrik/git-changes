@@ -2,13 +2,21 @@
 const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const writeFile = util.promisify(require('fs').writeFile);
 const argv = require('yargs').argv;
 
-async function main(dir, since, to, silent) {
-    dir = parseDir(dir);
+async function main(gitdir, since, to, output, silent) {
+    gitdir = parseDir(gitdir);
     try {
-        const changes = await getChanges(dir, since, to);
-        if (!silent) console.log(changes);
+        const changes = await getChanges(gitdir, since, to);
+
+        if (output) {
+            const outputFile = path.resolve(output);
+            await writeFile(outputFile, changes);
+        } else if (!silent) {
+            console.log(changes);
+        }
+
         return changes;
     } catch (err) {
         if (!silent) console.log(err);
@@ -33,7 +41,8 @@ async function getChanges(dir, since, to) {
         } catch (err) {}
     }
 
-    return await execute(`git --git-dir ${dir} log --no-merges --pretty=format:' * %s' ` + (since ? `${since}..${to}`: `${to}`));
+    let res = await execute(`git --git-dir ${dir} log --no-merges --pretty=format:' * %s' ` + (since ? `${since}..${to}`: `${to}`));
+    return res + '\n';
 }
 
 async function execute(cmd, opts) {
@@ -52,6 +61,7 @@ module.exports = opts => {
     const dir = opts.dir ? opts.dir : argv.dir;
     const since = opts.since ? opts.since : argv.since;
     const to = opts.to ? opts.to : argv.to;
+    const output = opts.output ? opts.output : argv.output;
 
-    return main(dir, since, to, opts.silent);
+    return main(dir, since, to, output, opts.silent);
 };

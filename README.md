@@ -15,15 +15,15 @@ $ npm install -g git-changes
 Usage description
 
 ```
-Usage: git-changes [--dir=<git-directory>] [--since=<git-tag>] [--to==<git-tag>]
+Usage: git-changes [--dir=<git-directory>] [--output=<output_filename>] [--since=<git-tag>] [--to==<git-tag>]
 ```
 
 ### Examples
 
-Pipe changes from the latest relase to file
+Write changes from the latest relase to file
 
 ```console
-$ git-changes > changelog
+$ git-changes --output=changelog
 ```
 
 Get changes between releases
