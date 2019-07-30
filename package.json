@@ -1,6 +1,6 @@
 {
   "name": "git-changes",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Tool for getting a changelog between two git tags",
   "main": "index.js",
   "preferGlobal": true,
