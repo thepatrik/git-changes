@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/thepatrik/git-changes#readme",
   "dependencies": {
-    "yargs": "^12.0.5"
+    "yargs": "^13.3.0"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
-    "jest": "^24.0.0"
+    "eslint": "^6.1.0",
+    "jest": "^24.8.0"
   }
 }
